@@ -1,74 +1,98 @@
-import { Image, StyleSheet, Platform } from 'react-native';
+// app/(tabs)/index.tsx
+import { View, Text, ScrollView, Pressable } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { FlashList } from '@shopify/flash-list';
+import { useState } from 'react';
+import { Ionicons } from '@expo/vector-icons';
+import { mockProducts, categories } from '../../constants/mock-data';
+import { ProductCard } from '../../components/ui/product-card';
+import { SearchBar } from '../../components/ui/search-bar';
 
-import { HelloWave } from '@/components/HelloWave';
-import ParallaxScrollView from '@/components/ParallaxScrollView';
-import { ThemedText } from '@/components/ThemedText';
-import { ThemedView } from '@/components/ThemedView';
+export default function ShopScreen() {
+  const [selectedCategory, setSelectedCategory] = useState('All');
+  const [searchQuery, setSearchQuery] = useState('');
 
-export default function HomeScreen() {
   return (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
-      headerImage={
-        <Image
-          source={require('@/assets/images/partial-react-logo.png')}
-          style={styles.reactLogo}
+    <SafeAreaView style={{ flex: 1, backgroundColor: '#151718' }}>
+      {/* Header */}
+      <View style={{ padding: 16, backgroundColor: '#1A1A1A' }}>
+        <View style={{ 
+          flexDirection: 'row', 
+          justifyContent: 'space-between', 
+          alignItems: 'center',
+          marginBottom: 16 
+        }}>
+          <Text style={{ 
+            fontSize: 24, 
+            fontFamily: 'GothamBold', 
+            color: '#FFFFFF' 
+          }}>
+            Chilli No. 5
+          </Text>
+          <Pressable>
+            <Ionicons name="cart-outline" size={24} color="#FFFFFF" />
+          </Pressable>
+        </View>
+        
+        <SearchBar 
+          value={searchQuery}
+          onChangeText={setSearchQuery}
+          placeholder="Search sauces..."
         />
-      }>
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Welcome!</ThemedText>
-        <HelloWave />
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 1: Try it</ThemedText>
-        <ThemedText>
-          Edit <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> to see changes.
-          Press{' '}
-          <ThemedText type="defaultSemiBold">
-            {Platform.select({
-              ios: 'cmd + d',
-              android: 'cmd + m',
-              web: 'F12'
-            })}
-          </ThemedText>{' '}
-          to open developer tools.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 2: Explore</ThemedText>
-        <ThemedText>
-          Tap the Explore tab to learn more about what's included in this starter app.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 3: Get a fresh start</ThemedText>
-        <ThemedText>
-          When you're ready, run{' '}
-          <ThemedText type="defaultSemiBold">npm run reset-project</ThemedText> to get a fresh{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> directory. This will move the current{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> to{' '}
-          <ThemedText type="defaultSemiBold">app-example</ThemedText>.
-        </ThemedText>
-      </ThemedView>
-    </ParallaxScrollView>
+      </View>
+
+      {/* Categories - Now with fixed height */}
+      <View style={{ 
+        height: 48,  // Fixed container height
+        backgroundColor: '#1A1A1A',
+        justifyContent: 'center' // Center the ScrollView vertically
+      }}>
+        <ScrollView 
+          horizontal 
+          showsHorizontalScrollIndicator={false}
+          contentContainerStyle={{ paddingHorizontal: 16 }}
+        >
+          {categories.map((category) => (
+            <Pressable
+              key={category}
+              onPress={() => setSelectedCategory(category)}
+              style={{
+                backgroundColor: selectedCategory === category ? '#E40421' : '#2A2A2A',
+                paddingHorizontal: 12,
+                paddingVertical: 6,
+                borderRadius: 16,
+                marginRight: 8,
+                height: 32,
+                justifyContent: 'center',
+                minWidth: 60,
+              }}
+            >
+              <Text style={{
+                color: '#FFFFFF',
+                fontFamily: 'GothamBook',
+                fontSize: 13,
+                textAlign: 'center'
+              }}>
+                {category}
+              </Text>
+            </Pressable>
+          ))}
+        </ScrollView>
+      </View>
+
+      {/* Product Grid */}
+      <FlashList
+        data={mockProducts}
+        numColumns={2}
+        renderItem={({ item }) => (
+          <ProductCard
+            product={item}
+            onPress={() => {}}
+          />
+        )}
+        estimatedItemSize={300}
+        contentContainerStyle={{ padding: 8 }}
+      />
+    </SafeAreaView>
   );
 }
-
-const styles = StyleSheet.create({
-  titleContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
-  },
-  stepContainer: {
-    gap: 8,
-    marginBottom: 8,
-  },
-  reactLogo: {
-    height: 178,
-    width: 290,
-    bottom: 0,
-    left: 0,
-    position: 'absolute',
-  },
-});
