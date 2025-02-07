@@ -12,6 +12,7 @@
       "supportsTablet": true
     },
     "android": {
+      "networkSecurityConfig": "./android/app/src/main/res/xml/network_security_config.xml",
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"

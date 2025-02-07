@@ -1,16 +1,57 @@
 // app/(tabs)/index.tsx
-import { View, Text, ScrollView, Pressable } from 'react-native';
+import { View, Text, ScrollView, Pressable, ActivityIndicator } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { FlashList } from '@shopify/flash-list';
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import { Ionicons } from '@expo/vector-icons';
-import { mockProducts, categories } from '../../constants/mock-data';
+import { categories } from '../../constants/mock-data';
 import { ProductCard } from '../../components/ui/product-card';
 import { SearchBar } from '../../components/ui/search-bar';
+import { useProducts } from '../../hooks/useProducts';
+import debounce from 'lodash/debounce';
 
 export default function ShopScreen() {
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [searchQuery, setSearchQuery] = useState('');
+
+  // Debounced search to prevent too many API calls
+  const debouncedSearch = useCallback(
+    debounce((text: string) => setSearchQuery(text), 500),
+    []
+  );
+
+  const { 
+    data,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+    isLoading,
+    isError,
+    error
+  } = useProducts({
+    category: selectedCategory,
+    search: searchQuery
+  });
+
+  const products = data?.pages.flatMap(page => page.products) ?? [];
+
+  const loadMore = () => {
+    if (hasNextPage && !isFetchingNextPage) {
+      fetchNextPage();
+    }
+  };
+
+  if (isError) {
+    return (
+      <SafeAreaView style={{ flex: 1, backgroundColor: '#151718' }}>
+        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', padding: 20 }}>
+          <Text style={{ color: '#FFFFFF', fontFamily: 'GothamBold', textAlign: 'center' }}>
+            {error instanceof Error ? error.message : 'Failed to load products'}
+          </Text>
+        </View>
+      </SafeAreaView>
+    );
+  }
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: '#151718' }}>
@@ -36,16 +77,16 @@ export default function ShopScreen() {
         
         <SearchBar 
           value={searchQuery}
-          onChangeText={setSearchQuery}
+          onChangeText={debouncedSearch}
           placeholder="Search sauces..."
         />
       </View>
 
-      {/* Categories - Now with fixed height */}
+      {/* Categories */}
       <View style={{ 
-        height: 48,  // Fixed container height
+        height: 48,
         backgroundColor: '#1A1A1A',
-        justifyContent: 'center' // Center the ScrollView vertically
+        justifyContent: 'center'
       }}>
         <ScrollView 
           horizontal 
@@ -82,7 +123,7 @@ export default function ShopScreen() {
 
       {/* Product Grid */}
       <FlashList
-        data={mockProducts}
+        data={products}
         numColumns={2}
         renderItem={({ item }) => (
           <ProductCard
@@ -92,6 +133,28 @@ export default function ShopScreen() {
         )}
         estimatedItemSize={300}
         contentContainerStyle={{ padding: 8 }}
+        onEndReached={loadMore}
+        onEndReachedThreshold={0.5}
+        ListFooterComponent={() => (
+          isFetchingNextPage ? (
+            <View style={{ padding: 20 }}>
+              <ActivityIndicator color="#E40421" />
+            </View>
+          ) : null
+        )}
+        ListEmptyComponent={() => (
+          isLoading ? (
+            <View style={{ padding: 20 }}>
+              <ActivityIndicator color="#E40421" />
+            </View>
+          ) : (
+            <View style={{ padding: 20, alignItems: 'center' }}>
+              <Text style={{ color: '#FFFFFF', fontFamily: 'GothamBook' }}>
+                No products found
+              </Text>
+            </View>
+          )
+        )}
       />
     </SafeAreaView>
   );
