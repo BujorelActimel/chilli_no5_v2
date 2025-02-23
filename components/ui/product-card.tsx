@@ -2,14 +2,11 @@
 import { View, Text, Pressable, StyleSheet } from 'react-native';
 import { Image } from 'expo-image';
 import { Ionicons } from '@expo/vector-icons';
+import { useCartStore } from '../../store/cartStore';
+import { TransformedProduct } from '../../utils/transformers';
 
-interface Product {
-  id: string;
-  name: string;
-  price: number;
-  image: string;
-  spicyLevel: number;
-}
+
+type Product = TransformedProduct;
 
 interface ProductCardProps {
   product: Product;
@@ -17,6 +14,8 @@ interface ProductCardProps {
 }
 
 export function ProductCard({ product, onPress }: ProductCardProps) {
+  const addItem = useCartStore(state => state.addItem);
+
   return (
     <View style={styles.productItem}>
       <Image
@@ -34,7 +33,6 @@ export function ProductCard({ product, onPress }: ProductCardProps) {
           £{product.price.toFixed(2)}
         </Text>
 
-        {/* Spiciness level */}
         <View style={styles.spicyLevel}>
           {[...Array(5)].map((_, index) => (
             <Ionicons
@@ -52,7 +50,10 @@ export function ProductCard({ product, onPress }: ProductCardProps) {
           <Ionicons name="heart-outline" size={20} color="#E40421" />
         </Pressable>
         
-        <Pressable style={styles.addToCartButton}>
+        <Pressable 
+          style={styles.addToCartButton}
+          onPress={() => addItem(product)}
+        >
           <Text style={styles.addToCartText}>Add to Cart</Text>
         </Pressable>
       </View>

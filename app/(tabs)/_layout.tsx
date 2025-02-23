@@ -2,6 +2,7 @@
 import { Tabs } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import { Platform } from 'react-native';
+import { TabCartIcon } from '../../components/ui/tab-cart-icon';
 
 export default function TabsLayout() {
   return (
@@ -39,7 +40,7 @@ export default function TabsLayout() {
         options={{
           title: 'Cart',
           tabBarIcon: ({ color, size }) => (
-            <Ionicons name="cart-outline" size={size} color={color} />
+            <TabCartIcon color={color} size={size} />
           ),
         }}
       />
