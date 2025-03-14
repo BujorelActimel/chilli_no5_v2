@@ -55,7 +55,9 @@ This mobile application provides a seamless shopping experience for customers of
    * Copy the `.env.example` file to a new file named `.env`
    * Update the environment variables with your WooCommerce credentials:
      ```
-     EXPO_PUBLIC_WOOCOMMERCE_URL=https://your-store-url.comEXPO_PUBLIC_WOOCOMMERCE_CONSUMER_KEY=your_consumer_keyEXPO_PUBLIC_WOOCOMMERCE_CONSUMER_SECRET=your_consumer_secret
+     EXPO_PUBLIC_WOOCOMMERCE_URL=https://your-store-url.com
+     EXPO_PUBLIC_WOOCOMMERCE_CONSUMER_KEY=your_consumer_key
+     EXPO_PUBLIC_WOOCOMMERCE_CONSUMER_SECRET=your_consumer_secret
      ```
 4. Start the development server:
 
