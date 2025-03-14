@@ -1,50 +1,127 @@
-# Welcome to your Expo app 👋
+# Chilli No. 5 Mobile App
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+A React Native e-commerce application for Chilli No. 5, built with Expo Router and TypeScript.
 
-## Get started
+## 🌶️ Overview
 
-1. Install dependencies
+This mobile application provides a seamless shopping experience for customers of Chilli No. 5, allowing users to browse and purchase hot sauces and related products. The app features a clean, modern design with a dark mode UI to showcase the brand's premium products.
+
+## 📱 Features
+
+* **Product Browsing** : Browse products by categories with a user-friendly interface
+* **Search Functionality** : Search for specific products with real-time feedback
+* **Shopping Cart** : Add, remove, and manage products in cart
+* **Wishlist** : Save favorite products for later
+* **User Profiles** : View order history and manage account details
+* **WooCommerce Integration** : Real-time product data from a WooCommerce store
+
+## 🛠️ Tech Stack
+
+* [React Native](https://reactnative.dev/) - Core framework
+* [Expo](https://expo.dev/) - Development platform and tools
+* [Expo Go](https://expo.dev/go) - Testing app for development
+* [Expo Router](https://docs.expo.dev/router/introduction/) - Navigation solution
+* [TypeScript](https://www.typescriptlang.org/) - Type safety and improved developer experience
+* [TanStack Query](https://tanstack.com/query/latest) - Data fetching and state management
+* [WooCommerce REST API](https://woocommerce.github.io/woocommerce-rest-api-docs/) - E-commerce platform integration
+
+## 🚀 Getting Started
+
+### Prerequisites
+
+* Node.js (v18 or newer)
+* expo
+* npm or yarn
+* Expo Go app installed on your iOS/Android device
+* (Optional) iOS/Android simulator for development
+
+### Installation
+
+1. Clone the repository:
+
+   ```bash
+   git clone https://github.com/your-username/chilli-no5-app.git
+   cd chilli-no5-app
+   ```
+2. Install dependencies:
 
    ```bash
    npm install
+   # or
+   yarn install
    ```
+3. Environment setup:
 
-2. Start the app
+   * Copy the `.env.example` file to a new file named `.env`
+   * Update the environment variables with your WooCommerce credentials:
+     ```
+     EXPO_PUBLIC_WOOCOMMERCE_URL=https://your-store-url.comEXPO_PUBLIC_WOOCOMMERCE_CONSUMER_KEY=your_consumer_keyEXPO_PUBLIC_WOOCOMMERCE_CONSUMER_SECRET=your_consumer_secret
+     ```
+4. Start the development server:
 
    ```bash
-    npx expo start
+   npx expo start
+   # or alternative commands
+   npm start
+   yarn start
+   ```
+5. Scan the QR code with your device:
+
+   * iOS: Scan with the Camera app
+   * Android: Scan with the Expo Go app
+
+   Or run on a simulator:
+
+   ```bash
+   # iOS
+   npx expo run:ios
+   # or npm run ios
+
+   # Android
+   npx expo run:android
+   # or npm run android
    ```
 
-In the output, you'll find options to open the app in a
+## 📁 Project Structure
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
-
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
-
-```bash
-npm run reset-project
+```
+chilli-no5-app/
+├── app/                    # Main application screens and navigation
+│   ├── (tabs)/             # Tab-based navigation screens
+│   ├── _layout.tsx         # Root layout for the app
+│   └── +not-found.tsx      # 404 screen
+├── assets/                 # Static assets
+│   ├── fonts/              # Custom fonts (Gotham)
+│   └── images/             # App images and icons
+├── components/             # Reusable UI components
+│   └── ui/                 # Core UI components
+├── constants/              # App constants and mock data
+├── hooks/                  # Custom React hooks
+├── types/                  # TypeScript type definitions
+├── utils/                  # Utility functions
+└── package.json            # Project dependencies
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+## 🔄 WooCommerce Integration
 
-## Learn more
+The app connects to a WooCommerce store using the REST API. Key features include:
 
-To learn more about developing your project with Expo, look at the following resources:
+* Product listing with pagination
+* Category filtering
+* Search functionality
+* Product details
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+For WooCommerce API setup:
 
-## Join the community
+1. Go to your WooCommerce store admin
+2. Navigate to WooCommerce > Settings > Advanced > REST API
+3. Add a new key with Read permissions
+4. Copy the Consumer Key and Consumer Secret to your `.env` file
 
-Join our community of developers creating universal apps.
+## 📚 Additional Resources
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+* [Expo Documentation](https://docs.expo.dev/)
+* [Expo Go](https://docs.expo.dev/get-started/expo-go/)
+* [Expo Development Builds](https://docs.expo.dev/develop/development-builds/introduction/)
+* [React Native Documentation](https://reactnative.dev/docs/getting-started)
+* [WooCommerce REST API Documentation](https://woocommerce.github.io/woocommerce-rest-api-docs/)
